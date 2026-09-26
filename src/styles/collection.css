@@ -1,0 +1,72 @@
+.inventory-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px; }
+.filter-tabs { display: flex; flex-wrap: wrap; gap: 5px; }
+.filter-tabs button { min-height: 44px; padding: 10px 15px; border: 1px solid transparent; background: transparent; color: #b5c1a4; border-radius: 4px; font-size: .78rem; }
+.filter-tabs button.active { border-color: #8d8654; background: #393e28; color: #e1ce9d; }
+.filter-tabs button span { font-size: .6rem; margin-left: 6px; color: #b6c49c; }
+.wallet { display: flex; align-items: center; gap: 7px; color: var(--gold); white-space: nowrap; font-size: .93rem; }
+.wallet small { font-size: .52rem; color: #c3c5a5; letter-spacing: .1em; }
+.wallet svg { width: 18px; height: 18px; }
+.inventory-summary { display: flex; align-items: center; gap: 25px; margin: 0 0 20px; font-size: .77rem; color: #b5c1a2; }
+.inventory-summary > span:nth-child(2) { margin-left: auto; }
+.inventory-summary svg { width: 14px; height: 14px; color: var(--gold); margin-right: 4px; }
+.item-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 17px; }
+.item-card { display: flex; flex-direction: column; background: var(--panel); border: 1px solid #48563c; border-radius: 5px; padding: 17px; min-width: 0; }
+.item-card.equipped { border-color: #919259; }
+.item-top { display: flex; justify-content: space-between; gap: 8px; font-size: .51rem; letter-spacing: .12em; }
+.item-rarity { color: var(--rarity); }
+.item-count { color: #bfc7ac; }
+.item-art { display: grid; place-content: center; height: 116px; margin: 10px 0; background: radial-gradient(ellipse, #6b794b28, transparent 65%); }
+.item-art img { width: 85px; height: 85px; }
+.item-card h3 { font-size: .97rem; color: #e1e3ce; margin-bottom: 8px; font-weight: 500; }
+.item-card h3 span { color: var(--gold); }
+.item-card > p { font-size: .76rem; line-height: 1.6; margin-bottom: 16px; }
+.item-stats { display: flex; flex-wrap: wrap; gap: 7px 12px; margin-bottom: 17px; font-size: .65rem; color: #b2c39b; }
+.item-stats b { color: #d7ddbd; font-weight: 500; }
+.item-actions, .item-purchase { display: flex; align-items: center; justify-content: space-between; gap: 5px; margin-top: auto; border-top: 1px solid #435337; padding-top: 14px; }
+.item-actions > .button { flex: 1; }
+.item-actions > .muted { flex: 1; font-size: .68rem; }
+.item-actions > .icon-button { width: 36px; }
+.item-actions > .icon-button svg { width: 17px; height: 17px; }
+.is-equipped { color: var(--gold); }
+.item-purchase > span { color: var(--gold); font-size: .85rem; }
+.item-purchase svg { width: 14px; height: 14px; margin-right: 5px; }
+.market-intro { display: flex; align-items: center; gap: 18px; margin-bottom: 25px; }
+.market-intro > svg { color: var(--gold); width: 28px; height: 28px; }
+.market-intro p { font-size: .83rem; flex: 1; }
+.market-intro p strong { display: block; color: #dedfbe; font-weight: 500; margin-bottom: 4px; }
+.market-intro .button { flex-shrink: 0; }
+.journal-tabs { border-bottom: 1px solid #3f4f33; padding-bottom: 20px; margin-bottom: 25px; }
+.journal-layout { display: grid; grid-template-columns: minmax(0, 1fr) 285px; gap: 35px; align-items: start; }
+.journal-entry { display: flex; gap: 19px; padding: 28px 0; border-bottom: 1px solid #3e4f30; }
+.journal-entry:first-child { padding-top: 10px; }
+.journal-mark { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; background: #2d3925; border: 1px solid #667e4655; border-radius: 50%; flex-shrink: 0; color: var(--gold); }
+.journal-mark svg { width: 15px; height: 15px; }
+.journal-entry h2 { font-size: 1.2rem; margin: 8px 0 14px; }
+.journal-entry p { font-size: .9rem; margin-bottom: 13px; }
+.values-card h2 { margin: 12px 0; font-size: 1.2rem; }
+.values-card > p { font-size: .84rem; margin-bottom: 24px; }
+.values-card .meter-group { margin-bottom: 19px; }
+.journal-totals { border-top: 1px solid #465d36; padding-top: 20px; margin-top: 26px; }
+.journal-totals > span { display: flex; justify-content: space-between; font-size: .77rem; color: #c0cba9; margin-bottom: 15px; }
+.journal-totals strong { color: var(--gold); font-weight: 500; }
+.bestiary-grid, .achievement-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.bestiary-art { height: 150px; display: grid; place-items: center; background: radial-gradient(ellipse, #85945922, transparent 70%); margin: -10px 0 15px; }
+.bestiary-art img { height: 155px; }
+.bestiary-card h3 { font: 1.05rem Cinzel, serif; margin: 9px 0 13px; }
+.bestiary-card p { font-size: .81rem; }
+.weakness-list { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; margin: 19px 0; font-size: .62rem; color: #b5c3a1; }
+.weakness-list > span:first-child { font-size: .5rem; letter-spacing: .1em; }
+.element-pill { display: flex; align-items: center; gap: 4px; }
+.element-pill svg { width: 13px; height: 13px; }
+.enemy-pattern { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 15px; border-top: 1px solid #445936; }
+.enemy-pattern > span { font-size: .6rem; color: #c6d0b1; display: flex; gap: 4px; align-items: center; }
+.enemy-pattern svg { width: 12px; height: 12px; }
+.enemy-pattern > i { font-size: .6rem; color: #a9b692; }
+.achievement { text-align: center; padding: 30px 23px; }
+.achievement.unlocked { opacity: 1; border-color: #938652; }
+.achievement > div { display: grid; place-items: center; width: 50px; height: 50px; border: 1px solid #6f8251; border-radius: 50%; margin: 0 auto 18px; color: var(--gold); background: #36472b; }
+.achievement h3 { font: 1.05rem Cinzel, serif; margin-bottom: 10px; }
+.achievement p { font-size: .83rem; margin-bottom: 20px; }
+.ending-entry { margin-bottom: 25px; }
+.ending-entry h2 { margin: 12px 0 18px; }
+.ending-entry p { font-size: .95rem; }

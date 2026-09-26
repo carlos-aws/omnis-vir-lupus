@@ -1,0 +1,7 @@
+@import './styles/base.css';
+@import './styles/layout.css';
+@import './styles/welcome.css';
+@import './styles/game.css';
+@import './styles/collection.css';
+@import './styles/combat.css';
+@import './styles/responsive.css';

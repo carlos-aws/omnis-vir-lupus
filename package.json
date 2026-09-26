@@ -1,0 +1,37 @@
+{
+  "name": "omnis-vir-lupus",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "An independent, free Red Rising fan RPG about the person behind the weapon.",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "start": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build && node tools/build-sw.mjs",
+    "preview": "vite preview --host 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "icons": "node tools/make-icons.mjs",
+    "screenshots": "node --experimental-strip-types tools/capture.ts",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "test:campaign": "node --experimental-strip-types tools/simulate-campaign.ts",
+    "test:balance": "node --experimental-strip-types tools/verify-campaign.ts",
+    "test:browser": "npm run build && playwright test",
+    "check": "npm run typecheck && npm test && npm run build"
+  },
+  "dependencies": {
+    "@fontsource/barlow": "5.3.0",
+    "@fontsource/cinzel": "5.3.0",
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "26.6.3",
+    "typescript": "7.0.2",
+    "vite": "8.3.1"
+  }
+}
