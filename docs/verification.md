@@ -42,6 +42,13 @@ The browser suite uses disposable profiles and local test servers.
 serves that build beneath `/omnis-vir-lupus/`, rather than relying on a
 development server’s fallback behavior.
 
+The offline check starts a private production server, caches the release,
+closes the server and its connections, and confirms that network access fails.
+Reload must then return a service-worker response; navigation and export must
+still work. Chromium and Firefox additionally enable the offline flag.
+WebKit uses the server outage because Playwright’s offline flag blocks even
+literal worker responses ([upstream issue 42775](https://github.com/microsoft/playwright/issues/42775)).
+
 The core domain suite contains fourteen tests. The campaign checker
 exports and reloads every resolved turn and operation node. Its player
 policy earns resources through ordinary game actions and can lose.
@@ -68,10 +75,13 @@ development server running, `npm run screenshots` regenerates them.
   Their progression and balance results are recorded below.
 - Desktop and phone reference captures were regenerated and inspected.
   Capturing the late-game Sunlance effect produced no runtime errors.
+- The focused full-operation follow-up passed in Chromium and Firefox.
+  The updated server-outage check passed in **all three browser engines**.
 
 The publishing workflow runs the full browser suite in Chromium, Firefox,
-and WebKit on Ubuntu. Local WebKit execution needs host libraries absent
-from this development machine; the workflow installs those dependencies.
+and WebKit on Ubuntu, retaining traces when a browser check fails. The local
+WebKit follow-up used Ubuntu libraries extracted under `/tmp` and linked into
+the temporary browser bundle. CI installs its browser dependencies normally.
 
 ## Observed balance
 

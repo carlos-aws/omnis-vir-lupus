@@ -72,7 +72,8 @@ tests/
 tools/
   build-sw.mjs               Hashes and precaches every built asset.
   make-icons.mjs             Rasterizes the original wolf SVG.
-  serve-dist.mjs             Production subpath server for offline browser tests.
+  serve-dist.mjs             Importable production server; CLI uses port 5174.
+  serve-dist.d.mts           Type declaration for the shared test server.
   simulate-campaign.ts      Tactical policy and campaign save-round-trip traversal.
   verify-campaign.ts        All origins/difficulties/endings, eight phases, level 80.
   capture.ts                Desktop/phone reference captures and a late-game spell.
