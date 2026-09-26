@@ -20,8 +20,8 @@ the evidence; content counts alone do not establish production quality.
 | Opponent variety | 40 regular enemies, 16 bosses, seven sprite families | Data integrity and complete campaign traversal |
 | Abilities and equipment | 19 definitions, 46 equipment pieces, consumables, materials and forging | Level checks; browser purchase/equip/forge and appearance test |
 | Pixel intro | Five animated scenes with a skip control and keyboard support | Intro/create browser flow and visual inspection |
-| Local saves and export | Versioned validated envelope, prior checkpoint, cross-tab protection | Round trips, reload during battle, corrupt imports, quota failure, stale tabs |
-| Offline play | Complete release cache scoped to this site | Offline production reload, navigation and export under a repository path |
+| Local saves and export | Versioned validated envelope, prior checkpoint, cross-tab protection | Round trips, reload during battle, corrupt imports, quota failure, stale tabs, input during autosave |
+| Offline play | Complete release cache scoped to this site | Production reload with the server stopped; save-before-update and failed-save recovery |
 | Responsive screens | Touch controls, narrow layouts, desktop shortcuts | 320, 390, 768, 1024 and 1920px browser checks and captures |
 | Accessibility preferences | Native controls/dialogs, focus retention, reduced motion and larger text | axe checks, keyboard flow and settings persistence |
 | Mature audience | Fictional violence, oppression, grief, and non-graphic Carving | Story and credits; intended 16+, not an official classification |
@@ -56,6 +56,12 @@ Later browser tests import checkpoints produced by that traversal to
 exercise Carving, companions, and endings without pretending to have
 manually played the intervening hours.
 
+The browser suite contains 23 scenarios, run on three engines in CI.
+The autosave regression holds the browser’s real save lock and advances a
+virtual clock before choosing a story response. The update regression serves
+a second worker revision, checks that a failed save blocks reload, and then
+verifies the retained character and cache cleanup after saving succeeds.
+
 Visual growth fixtures set XP directly only to inspect all eight portraits
 in identical equipment. They are separate from progression tests.
 Reference screenshots are in [screenshots](screenshots/). With the Vite
@@ -77,6 +83,9 @@ development server running, `npm run screenshots` regenerates them.
   Capturing the late-game Sunlance effect produced no runtime errors.
 - The focused full-operation follow-up passed in Chromium and Firefox.
   The updated server-outage check passed in **all three browser engines**.
+- All **15 focused checks** for the input-queue change passed across the
+  three engines: autosave interaction, a full operation, mobile combat,
+  keyboard/save controls, and update durability.
 
 The publishing workflow runs the full browser suite in Chromium, Firefox,
 and WebKit on Ubuntu, retaining traces when a browser check fails. The local

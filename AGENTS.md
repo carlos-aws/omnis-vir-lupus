@@ -55,7 +55,7 @@ src/
     kit.ts                   Escaping, buttons, meters, native dialogs, notices.
     screens.ts               Game screen HTML; no game mutations.
     welcome.ts               Title, origin selection, prologue, guide, credits.
-    actions.ts               Delegated action routing.
+    actions.ts               Click queue and delegated action routing.
     start.ts                 Character creation and loading.
     session.ts               Draft mutations and serialized durable writes.
     camp-actions.ts          Care, companions, inventory, quartermaster, forge.
@@ -113,6 +113,8 @@ accessible HTML control; essential gameplay cannot exist only on the canvas.
 When replacing screen HTML, retain keyboard focus where appropriate and
 reuse the single renderer. Put base CSS before component and responsive
 styles. Keep reduced-motion behavior in both CSS and Phaser presentation.
+Keep clicks and keyboard shortcuts responsive during background saves;
+discard queued controls that belong to a screen already replaced.
 
 Review `git diff --check` and the working tree before committing. Update this
 map when adding files, and report known limits instead of implying that a

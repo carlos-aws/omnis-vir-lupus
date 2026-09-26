@@ -1,6 +1,34 @@
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
+import { SAVE_KEY } from '../../src/game/storage.ts';
 import { action, newGame, saved } from './helpers.ts';
+
+test('a story choice made during autosave is handled after the checkpoint finishes', async ({ page }) => {
+  await page.clock.install();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await newGame(page);
+  await action(page, 'continue-story').click();
+  await action(page, 'story-next').click();
+  await expect(action(page, 'story-choice').first()).toBeVisible();
+  const releaseLock = await page.evaluateHandle(key => new Promise<() => void>(resolve => {
+    void navigator.locks.request(key, () => new Promise<void>(release => resolve(release)));
+  }), SAVE_KEY);
+  try {
+    await page.clock.fastForward(31_000);
+    await expect.poll(() => page.evaluate(async key => {
+      return (await navigator.locks.query()).pending?.some(lock => lock.name === key);
+    }, SAVE_KEY)).toBe(true);
+    await action(page, 'story-choice').first().click();
+  } finally {
+    await releaseLock.evaluate(release => release());
+    await releaseLock.dispose();
+  }
+  await expect(page.getByRole('dialog', { name: 'The consequence of your choice' })).toBeVisible();
+  await action(page, 'story-close').click();
+  const state = await saved(page);
+  expect(state.expedition?.node).toBe(2);
+  expect(state.playSeconds).toBeGreaterThanOrEqual(30);
+});
 
 test('a stale tab cannot overwrite newer progress', async ({ page, context }) => {
   await newGame(page);

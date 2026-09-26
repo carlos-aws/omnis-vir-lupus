@@ -28,6 +28,12 @@ does not replace live state. Storage failure leaves the valid draft playable
 in memory with a visible export warning. Combat resolves a whole turn before
 animation; reloading during a spell restores the committed turn.
 
+Clicks are queued while a background save finishes. Before dispatch, the
+control must still belong to the displayed interface. This preserves input
+during the periodic playtime checkpoint and discards duplicate requests from
+controls that a completed transaction already replaced. Keyboard shortcuts
+use the same route.
+
 The renderer is a single retained Phaser instance. Its canvas is moved
 between screens, paused when absent or hidden, and resized with its parent.
 Temporary combat geometry is disposed when its animation ends or the

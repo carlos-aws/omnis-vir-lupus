@@ -21,7 +21,7 @@ export function installPreferences(app: Application): void {
   });
   document.addEventListener('keydown', event => {
     const target = event.target;
-    if (event.repeat || event.altKey || event.ctrlKey || event.metaKey || app.busy || app.ui.acting
+    if (event.repeat || event.altKey || event.ctrlKey || event.metaKey || app.ui.acting
       || target instanceof HTMLInputElement || target instanceof HTMLSelectElement
       || target instanceof HTMLTextAreaElement || document.querySelector('dialog[open]')) return;
     const key = event.key.toLowerCase();

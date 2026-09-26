@@ -15,11 +15,20 @@ const views: View[] = ['camp', 'world', 'character', 'inventory', 'journal', 'ma
 
 export function installActions(app: Application): void {
   installCreation(app);
+  let pending = Promise.resolve();
   document.addEventListener('click', event => {
     const control = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-action]');
-    if (!control || control.disabled || app.busy || app.ui.acting) return;
+    if (!control || control.disabled || app.ui.acting) return;
     void app.sound.unlock();
-    void dispatch(app, control).catch(report);
+    pending = pending.then(async () => {
+      // An autosave must not consume the player's click. A replaced control
+      // belongs to an earlier screen and must not trigger a second transaction.
+      while (app.busy && control.isConnected) {
+        await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+      }
+      if (!control.isConnected || control.disabled || app.ui.acting) return;
+      await dispatch(app, control);
+    }).catch(report);
   });
 }
 
