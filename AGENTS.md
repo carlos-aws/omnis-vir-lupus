@@ -117,6 +117,9 @@ reuse the single renderer. Put base CSS before component and responsive
 styles. Keep reduced-motion behavior in both CSS and Phaser presentation.
 Keep clicks and keyboard shortcuts responsive during background saves;
 discard queued controls that belong to a screen already replaced.
+Pause and resume scene systems before sleeping or waking the render loop;
+queued scene operations need another frame to run. Care effects must not
+discard camp interaction commands.
 
 Review `git diff --check` and the working tree before committing. Update this
 map when adding files, and report known limits instead of implying that a

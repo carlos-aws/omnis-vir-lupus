@@ -201,17 +201,19 @@ class WolfScene extends Phaser.Scene {
     }
     if (!reduced) for (const [index, light] of this.glowLights.entries()) light.setAlpha(0.36 + Math.sin(time / 310 + index) * 0.035);
     const hero = this.actors.get('hero');
-    if (hero && this.options.mode === 'camp' && !reduced && time > this.actionUntil) {
+    if (hero && this.options.mode === 'camp' && !reduced) {
       const inputTarget = document.activeElement;
       const typing = inputTarget instanceof HTMLInputElement || inputTarget instanceof HTMLTextAreaElement || inputTarget instanceof HTMLSelectElement;
       let dx = 0, dy = 0;
       if (!typing && !document.querySelector('dialog[open]') && this.keys) {
-        dx = Number(this.keys.D.isDown || this.keys.RIGHT.isDown) - Number(this.keys.A.isDown || this.keys.LEFT.isDown);
-        dy = Number(this.keys.S.isDown || this.keys.DOWN.isDown) - Number(this.keys.W.isDown || this.keys.UP.isDown);
+        if (time > this.actionUntil) {
+          dx = Number(this.keys.D.isDown || this.keys.RIGHT.isDown) - Number(this.keys.A.isDown || this.keys.LEFT.isDown);
+          dy = Number(this.keys.S.isDown || this.keys.DOWN.isDown) - Number(this.keys.W.isDown || this.keys.UP.isDown);
+        }
         if (Phaser.Input.Keyboard.JustDown(this.keys.E)) this.onInteract?.(hero.x < 280 ? 'rest' : hero.x > 405 ? 'talk' : 'meal');
       }
       if (dx || dy) this.moveTarget = { x: Phaser.Math.Clamp(hero.x + dx * 10, 170, 463), y: Phaser.Math.Clamp(hero.y + dy * 8, 265, 306) };
-      if (this.moveTarget) {
+      if (this.moveTarget && time > this.actionUntil) {
         const distance = Phaser.Math.Distance.Between(hero.x, hero.y, this.moveTarget.x, this.moveTarget.y);
         const step = Math.min(distance, delta * 0.08);
         if (distance > 1) {
@@ -440,12 +442,15 @@ export class GameRenderer {
     this.options = options;
     this.game.scale.scaleMode = options.mode === 'cinematic' ? Phaser.Scale.ENVELOP : Phaser.Scale.FIT;
     this.scene.apply(options);
-    if (this.scene.ready && this.scene.scene.isPaused()) this.scene.scene.resume();
+    if (this.scene.ready && this.scene.sys.isPaused()) this.scene.sys.resume();
     if (this.scene.ready) this.game.loop.wake();
     this.game.scale.refresh();
   }
   pause(): void {
-    if (this.scene.ready) { this.scene.scene.pause(); this.game.loop.sleep(); }
+    if (!this.scene.ready) return;
+    // Queued scene commands cannot finish after the game loop goes to sleep.
+    if (this.scene.sys.isActive()) this.scene.sys.pause();
+    this.game.loop.sleep();
   }
   setTarget(uid: string): void { this.scene.setTarget(uid); }
   present(events: CombatEvent[], speed: 1 | 2): Promise<void> { return this.scene.present(events, speed); }

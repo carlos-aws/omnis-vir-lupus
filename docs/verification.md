@@ -22,7 +22,7 @@ the evidence; content counts alone do not establish production quality.
 | Pixel intro | Five animated scenes with a skip control and keyboard support | Intro/create browser flow and visual inspection |
 | Local saves and export | Versioned validated envelope, prior checkpoint, cross-tab protection | Round trips, reload during battle, corrupt imports, quota failure, stale tabs, input during autosave |
 | Offline play | Complete release cache scoped to this site | Production reload with the server stopped; save-before-update and failed-save recovery |
-| Responsive screens | Touch controls, narrow layouts, desktop shortcuts | 320, 390, 768, 1024 and 1920px browser checks and captures |
+| Responsive screens | Touch controls, narrow layouts, desktop shortcuts | 320, 390, 768, 1024 and 1920px checks; camp keyboard interaction after menu visits |
 | Accessibility preferences | Native controls/dialogs, focus retention, reduced motion and larger text | axe checks, keyboard flow and settings persistence |
 | Mature audience | Fictional violence, oppression, grief, and non-graphic Carving | Story and credits; intended 16+, not an official classification |
 | Fan-game attribution | Pierce Brown and rights-holder credit; original assets distinguished | README, in-game credits, third-party notices |
@@ -56,11 +56,14 @@ Later browser tests import checkpoints produced by that traversal to
 exercise Carving, companions, and endings without pretending to have
 manually played the intervening hours.
 
-The browser suite contains 23 scenarios, run on three engines in CI.
+The browser suite contains 24 scenarios, run on three engines in CI.
 The autosave regression holds the browser’s real save lock and advances a
 virtual clock before choosing a story response. The update regression serves
 a second worker revision, checks that a failed save blocks reload, and then
 verifies the retained character and cache cleanup after saving succeeds.
+The camp interaction regression visits every menu twice and uses the scene's
+interaction key after each return. It catches a paused renderer and commands
+discarded while the previous care effect is still playing.
 
 Visual growth fixtures set XP directly only to inspect all eight portraits
 in identical equipment. They are separate from progression tests.
@@ -72,23 +75,25 @@ development server running, `npm run screenshots` regenerates them.
 - Type checking, all fourteen domain tests, and the production build passed.
   The individual domain results were also checked with Node’s in-process
   test runner.
-- All **21 Chromium browser tests passed**, including the complete intro,
-  a full operation through the interface, all endings, and offline play.
-- After the final phone layout adjustment, the mobile battle, keyboard
-  focus, accessibility, and retreat check passed in both Chromium and Firefox.
-  Firefox also passed the targeted battle-reload and phone-navigation checks.
+- Release `68f29d6` passed all **69 browser checks** in Chromium, Firefox,
+  and WebKit and was published by
+  [GitHub Actions run 36260752954](https://github.com/carlos-aws/omnis-vir-lupus/actions/runs/36260752954).
+- The additional camp interaction regression failed before the renderer
+  correction. Afterward, all **12 focused checks** passed across the three
+  engines: repeated camp interaction, responsive navigation, mobile combat,
+  and the full pixel prologue.
 - All nine campaign traversals passed with save round trips at every step.
   Their progression and balance results are recorded below.
 - Desktop and phone reference captures were regenerated and inspected.
   Capturing the late-game Sunlance effect produced no runtime errors.
-- The focused full-operation follow-up passed in Chromium and Firefox.
-  The updated server-outage check passed in **all three browser engines**.
-- All **15 focused checks** for the input-queue change passed across the
-  three engines: autosave interaction, a full operation, mobile combat,
-  keyboard/save controls, and update durability.
+- The published release passed an isolated phone-browser check for creation,
+  care, reload, combat-turn reload, battle visibility, retreat checkpoints,
+  offline reload, and exported-save validation, with no runtime errors.
 
 The publishing workflow runs the full browser suite in Chromium, Firefox,
-and WebKit on Ubuntu, retaining traces when a browser check fails. The local
+and WebKit on Ubuntu, retaining traces when a browser check fails.
+[Current workflow results](https://github.com/carlos-aws/omnis-vir-lupus/actions/workflows/game.yml)
+record verification and publishing for subsequent commits. The local
 WebKit follow-up used Ubuntu libraries extracted under `/tmp` and linked into
 the temporary browser bundle. CI installs its browser dependencies normally.
 

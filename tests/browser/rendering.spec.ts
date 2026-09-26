@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { action, nav, newGame } from './helpers.ts';
+import { action, nav, newGame, saved } from './helpers.ts';
 
 test('the complete pixel prologue advances through all five scenes to the title', async ({ page }) => {
   const errors: string[] = [];
@@ -51,6 +51,24 @@ test('tablet and desktop screens fit and keep icon-only navigation accessible', 
     const audit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
     expect(audit.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) })), String(width)).toEqual([]);
   }
+});
+
+test('camp remains interactive after leaving and returning through menus', async ({ page }) => {
+  const warnings: string[] = [];
+  page.on('console', message => {
+    if (message.type() === 'warning' && message.text().includes('Cannot pause non-running Scene')) {
+      warnings.push(message.text());
+    }
+  });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await newGame(page);
+  for (let visit = 0; visit < 2; visit++) {
+    for (const view of ['world', 'character', 'inventory', 'market', 'journal', 'camp']) await nav(page, view);
+    const rations = (await saved(page)).inventory.ration;
+    await page.keyboard.press('e', { delay: 100 });
+    await expect.poll(async () => (await saved(page)).inventory.ration).toBe(rations - 1);
+  }
+  expect(warnings).toEqual([]);
 });
 
 test('title, origin selection, settings and cinematic remain usable at 320px', async ({ page }) => {
