@@ -99,6 +99,8 @@ CI runs the suite on Chromium, Firefox, and WebKit. Set `OVL_ALL_BROWSERS=1`
 locally to enable those projects after installing the additional browsers.
 Generated reports are in ignored `tools/out/`, `test-results/`, and
 `playwright-report/`. Inspect actual screenshots after visual changes.
+Traces retain DOM snapshots, source and actions; failure screenshots are
+captured separately to avoid continuous GPU readback during long encounters.
 Publish only `dist/`. Source modules and test fixtures are never deployed.
 
 ## Persistence and UI changes

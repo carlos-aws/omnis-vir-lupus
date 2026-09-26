@@ -10,7 +10,8 @@ const progress = (state: GameState) => JSON.stringify([
 ]);
 
 test('complete a main operation through the real story and combat controls', async ({ page }) => {
-  test.setTimeout(120_000);
+  test.setTimeout(240_000);
+  page.setDefaultTimeout(10_000);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await newGame(page);
   await action(page, 'continue-story').click();
